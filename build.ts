@@ -2,10 +2,9 @@
  * Remove old files, copy front-end ones.
  */
 
+import childProcess from 'child_process';
 import fs from 'fs-extra';
 import logger from 'jet-logger';
-import childProcess from 'child_process';
-
 
 /**
  * Start
@@ -19,6 +18,7 @@ import childProcess from 'child_process';
     await exec('tsc --build tsconfig.prod.json', './');
   } catch (err) {
     logger.err(err);
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   }
 })();

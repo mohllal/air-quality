@@ -2,21 +2,19 @@
  * Setup express server.
  */
 
-import morgan from 'morgan';
-import helmet from 'helmet';
-import express, { Request, Response, NextFunction } from 'express';
-import logger from 'jet-logger';
-
 import 'express-async-errors';
 
-import BaseRouter from '@src/routes';
+import express, { NextFunction, Request, Response } from 'express';
 
-import Paths from '@src/common/Paths';
+import BaseRouter from '@src/routes';
 import EnvVars from '@src/common/EnvVars';
 import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import RouteError from '@src/common/RouteError';
 import { NodeEnvs } from '@src/common/misc';
-
+import Paths from '@src/common/Paths';
+import RouteError from '@src/common/RouteError';
+import helmet from 'helmet';
+import logger from 'jet-logger';
+import morgan from 'morgan';
 
 // **** Variables **** //
 

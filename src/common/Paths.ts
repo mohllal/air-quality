@@ -6,7 +6,7 @@
 export default {
   Base: '/api',
   AirQuality: {
-    Base: '/air-quality',
-    Get: '/',
+    Base: '/air_quality',
+    NearestCity: '/nearest_city',
   },
 } as const;

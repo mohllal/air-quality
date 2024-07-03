@@ -1,29 +1,25 @@
+import AirQualityRoutes from '@src/routes/AirQualityRoutes';
+import Paths from '@src/common/Paths';
 import { Router } from 'express';
-import { IReq, IRes } from './types/express/misc';
-
-import Paths from '../common/Paths';
-
-
+import jetValidator from 'jet-validator';
 
 // **** Variables **** //
 
-const apiRouter = Router();
+const apiRouter = Router(),
+  validate = jetValidator();
 
 
-// ** Add AirQuality ** //
+// ** Add AirQualityRouter ** //
 
 const airQualityRouter = Router();
 
-// Get all users
+// Nearest city API
 airQualityRouter.get(
-  Paths.AirQuality.Get,
-  (_req: IReq, res: IRes) => {
-    res.json({});
-  },
+  Paths.AirQuality.NearestCity,
+  validate(['latitude', 'number', 'query'], ['longitude', 'number', 'query']),
+  AirQualityRoutes.findNearestCityPollution,
 );
 
-
-// Add AirQuality
 apiRouter.use(Paths.AirQuality.Base, airQualityRouter);
 
 
