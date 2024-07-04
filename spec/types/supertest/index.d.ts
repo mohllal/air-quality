@@ -7,6 +7,7 @@ declare module 'supertest' {
     headers: Record<string, string[]>;
     body: {
       error: string;
+      pollution?: IQAirPollution;
     };
   }
 }

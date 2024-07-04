@@ -19,6 +19,7 @@
     "max-len": [
       "warn",
       {
+        "ignoreStrings": true,
         "code": 85
       }
     ],

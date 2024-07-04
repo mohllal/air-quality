@@ -1,8 +1,7 @@
-import find from 'find';
 import Jasmine from 'jasmine';
-import { parse } from 'ts-command-line-args';
+import find from 'find';
 import logger from 'jet-logger';
-
+import { parse } from 'ts-command-line-args';
 
 // **** Types **** //
 

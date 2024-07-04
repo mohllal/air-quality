@@ -1,5 +1,5 @@
+import { IQAirPollution } from '@src/models/IQAir';
 import { Response } from 'supertest';
-
 
 // Misc
 export type TReqBody = Record<string, unknown>;
@@ -11,4 +11,5 @@ export type TApiCb = (res: TRes) => void;
 // typescript errors.
 type TBody = {
   [key: string]: unknown;
+  pollution?: IQAirPollution;
 }

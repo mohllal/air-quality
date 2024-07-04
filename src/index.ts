@@ -1,4 +1,4 @@
-import './pre-start'; // Must be the first import
+import '@src/pre-start'; // Must be the first import
 
 import EnvVars from '@src/common/EnvVars';
 import logger from 'jet-logger';

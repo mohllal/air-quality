@@ -1,3 +1,7 @@
+/**
+ * IQAir types
+ */
+
 export interface IQAirCityResponse {
   status: string
   data: IQAirCityData
