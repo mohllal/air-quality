@@ -9,49 +9,49 @@ describe('HttpClient', () => {
   });
 
   it('should make a GET request to the specified URL', async () => {
-    // Create instance.get method spy
-    const getSpy = spyOn(httpClient.instance, 'get').and.resolveTo({ data: {} });
+    // Create axios.get method spy
+    const axiosGetSpy = spyOn(httpClient.instance, 'get').and.resolveTo({ data: {} });
     
-    // Call the get method with the URL and options
+    // Call the HttpClient.get method with the URL and options
     const result = await httpClient.get('https://example.com', {});
 
-    // Assert that the instance.get method was called with the correct URL
-    expect(getSpy).toHaveBeenCalledWith('https://example.com', {});
+    // Assert that the axios.get method was called with the correct URL
+    expect(axiosGetSpy).toHaveBeenCalledWith('https://example.com', {});
 
-    // Assert that the httpClient.get method returns the correct data
+    // Assert that the HttpClient.get method returns the correct data
     expect(result.data).toEqual({});
   });
 
   it('should make a request with the specified config', async () => {
-    // Create instance.request method spy
-    const requestSpy = 
+    // Create axios.request method spy
+    const axiosRequestSpy = 
       spyOn(httpClient.instance, 'request').and.resolveTo({ data: {} });
   
-    // Call the get method with the URL and options
+    // Call the HttpClient.get method with the URL and options
     const result = await httpClient.request({});
 
-    // Assert that the instance.request method was called with the correct URL
-    expect(requestSpy).toHaveBeenCalledWith({});
+    // Assert that the axios.request method was called with the correct URL
+    expect(axiosRequestSpy).toHaveBeenCalledWith({});
 
-    // Assert that the httpClient.request method returns the correct data
+    // Assert that the HttpClient.request method returns the correct data
     expect(result.data).toEqual({});
   });
 
-  it('should throw an error when the instance.get method fails', async () => {
-    // Create instance.get method spy
-    const getSpy = 
+  it('should throw an error when the axios.get method fails', async () => {
+    // Create axios.get method spy
+    const axiosGetSpy = 
       spyOn(httpClient.instance, 'get')
         .and.rejectWith(new AxiosError('Network error!'));
   
     try {
-      // Call the httpClient.get method with the URL and options
+      // Call the HttpClient.get method with the URL and options
       await httpClient.get('https://example.com', {});
     } catch (error) {
-      // Assert that the httpClient.get method throws an error
+      // Assert that the HttpClient.get method throws an error
       expect(error).toBeInstanceOf(AxiosError);
     }
 
-    // Assert that the instance.get method was called with the correct URL
-    expect(getSpy).toHaveBeenCalledWith('https://example.com', {});
+    // Assert that the axios.get method was called with the correct URL
+    expect(axiosGetSpy).toHaveBeenCalledWith('https://example.com', {});
   });
 });

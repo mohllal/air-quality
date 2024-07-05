@@ -9,18 +9,18 @@ import TestAgent from 'supertest/lib/agent';
 import { defaultErrMsg as ValidatorErr } from 'jet-validator';
 import apiCb from 'spec/support/apiCb';
 import app from '@src/server';
+import { faker } from '@faker-js/faker';
 
 const getDummyPollution = () => {
   return {
-    ts: '2024-07-03T20:00:00.000Z',
-    aqius: 77,
+    ts: faker.date.past().toLocaleString(),
+    aqius: faker.number.int({ min: 1, max: 100}),
     mainus: 'p2',
-    aqicn: 33,
+    aqicn: faker.number.int({ min: 1, max: 100}),
     maincn: 'p2',
   } as IQAirPollution;
 };
 
-// Tests
 describe('AirQualityRoute', () => {
 
   let agent: TestAgent<Test>;

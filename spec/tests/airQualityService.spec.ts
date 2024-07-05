@@ -25,10 +25,10 @@ const getDummyCoordinates = () => {
 describe('AirQualityService', () => {
   describe('findByCoordinates', () => {
     it('should return the air quality data for a set of coordinates', async () => {
-      // Create dummy coordinates
+      // Get dummy coordinates data
       const coordinates = getDummyCoordinates();
   
-      // Create dummy pollution object
+      // Get dummy pollution data
       const pollution = getDummyPollution();
     
       // Create httpClient.get method spy
@@ -56,7 +56,7 @@ describe('AirQualityService', () => {
     });
   
     it('should throw an error when the httpClient.get method fails', async () => {
-      // Create dummy coordinates
+      // Get dummy coordinates data
       const coordinates = getDummyCoordinates();
   
       // Create httpClient.get method spy

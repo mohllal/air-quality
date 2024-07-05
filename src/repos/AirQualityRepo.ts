@@ -16,7 +16,7 @@ async function getOne(
  * Get all air quality documents.
  */
 async function getAll(): Promise<IAirQuality[]> {
-  return AirQuality.find({});
+  return AirQuality.find();
 }
 
 /**
@@ -26,14 +26,14 @@ async function getMostPolluted(
   latitude: number,
   longitude: number,
 ): Promise<IAirQuality | null> {
-  return AirQuality.findOne({ latitude, longitude }).sort('-pollution.aqius');
+  return AirQuality.findOne({ latitude, longitude }, null, { sort: { 'pollution.aqius': -1 } });
 }
 
 /**
  * Add one air quality document.
  */
 async function add(airQualityDoc: IAirQuality): Promise<void> {
-  const doc = new AirQuality({
+  await AirQuality.create({
     latitude: airQualityDoc.latitude,
     longitude: airQualityDoc.longitude,
     pollution: {
@@ -44,8 +44,6 @@ async function add(airQualityDoc: IAirQuality): Promise<void> {
       maincn: airQualityDoc.pollution.maincn,
     },
   });
-
-  await doc.save();
 }
 
 // **** Export default **** //
