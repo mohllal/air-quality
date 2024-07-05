@@ -1,4 +1,6 @@
-import AirQualityRoutes from '@src/routes/AirQualityRoutes';
+import { isLatitude, isLongitude } from '@src/utils/misc';
+
+import AirQualityRoute from '@src/routes/AirQualityRoute';
 import Paths from '@src/common/Paths';
 import { Router } from 'express';
 import jetValidator from 'jet-validator';
@@ -16,8 +18,8 @@ const airQualityRouter = Router();
 // Nearest city API
 airQualityRouter.get(
   Paths.AirQuality.NearestCity,
-  validate(['latitude', 'number', 'query'], ['longitude', 'number', 'query']),
-  AirQualityRoutes.findNearestCityPollution,
+  validate(['latitude', isLatitude, 'query'], ['longitude', isLongitude, 'query']),
+  AirQualityRoute.findNearestCityPollution,
 );
 
 apiRouter.use(Paths.AirQuality.Base, airQualityRouter);

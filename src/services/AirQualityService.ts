@@ -4,7 +4,7 @@ import {
 } from '@src/models/IQAir';
 
 import EnvVars from '@src/common/EnvVars';
-import HTTPClient from '@src/util/HttpClient';
+import HTTPClient from '@src/utils/HttpClient';
 import { ICoordinates } from '@src/models/misc';
 import logger from 'jet-logger';
 
@@ -33,6 +33,7 @@ async function findByCoordinates(
     );
   
     const pollution = response.data.data.current.pollution;
+  
     logger.info(
       'Got air quality info by coordinates ' +
       `- ${latitude}, ${longitude} - ${JSON.stringify(pollution)} ` +

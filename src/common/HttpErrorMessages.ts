@@ -14,7 +14,7 @@ enum HttpErrorMessages {
 
   /**
    * An error occurred from a provider we are integrating with while processing your request.
-   * This generic error message indicates an issue  with an external service or provider.
+   * This generic error message indicates an issue with an external service or provider.
    */
   
   PROVIDER_ERROR = 'An error occurred from a provider while processing your request. Please try again later!'

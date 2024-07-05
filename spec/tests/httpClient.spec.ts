@@ -1,5 +1,5 @@
 import { AxiosError } from 'axios';
-import HttpClient from '@src/util/HttpClient';
+import HttpClient from '@src/utils/HttpClient';
 
 describe('HttpClient', () => {
   let httpClient: HttpClient;

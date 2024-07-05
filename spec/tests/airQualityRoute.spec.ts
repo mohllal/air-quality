@@ -21,7 +21,7 @@ const getDummyPollution = () => {
 };
 
 // Tests
-describe('UserRouter', () => {
+describe('AirQualityRoute', () => {
 
   let agent: TestAgent<Test>;
 
@@ -31,8 +31,8 @@ describe('UserRouter', () => {
   });
   
   describe(`"GET:${Paths.AirQuality.NearestCity}"`, () => {
-    const LATITUDE_VALIDATION_ERROR_MSG = `${ValidatorErr}"latitude".`
-    const LONGITUDE_VALIDATION_ERROR_MSG = `${ValidatorErr}"longitude".`
+    const LATITUDE_VALIDATION_ERROR_MSG = `${ValidatorErr}"latitude".`;
+    const LONGITUDE_VALIDATION_ERROR_MSG = `${ValidatorErr}"longitude".`;
     
     // Setup API
     const callApi = (
@@ -82,6 +82,58 @@ describe('UserRouter', () => {
     (done) => {
       // Call API
       callApi(48.8566, undefined, res => {
+        expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
+        expect(res.body.error).toBe(LONGITUDE_VALIDATION_ERROR_MSG);
+        done();
+      });
+    });
+
+    // Invalid latitude param < -90
+    it('should return a JSON object with an error message of' + 
+      `${LATITUDE_VALIDATION_ERROR_MSG} and a status code of ` +
+      `${HttpStatusCodes.BAD_REQUEST} if the latitude param was invalid < -90.`
+    , (done) => {
+      // Call API
+      callApi(-100, 2.3522, res => {
+        expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
+        expect(res.body.error).toBe(LATITUDE_VALIDATION_ERROR_MSG);
+        done();
+      });
+    });
+
+    // Invalid latitude param > 90
+    it('should return a JSON object with an error message of' + 
+      `${LATITUDE_VALIDATION_ERROR_MSG} and a status code of ` +
+      `${HttpStatusCodes.BAD_REQUEST} if the latitude param was invalid > 90.`
+    , (done) => {
+      // Call API
+      callApi(100, 2.3522, res => {
+        expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
+        expect(res.body.error).toBe(LATITUDE_VALIDATION_ERROR_MSG);
+        done();
+      });
+    });
+
+    // Invalid longitude param < -180
+    it('should return a JSON object with an error message of' + 
+      `${LONGITUDE_VALIDATION_ERROR_MSG} and a status code of `+
+      `${HttpStatusCodes.BAD_REQUEST} if the longitude param was invalid < -180.`,
+    (done) => {
+      // Call API
+      callApi(48.8566, -200, res => {
+        expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
+        expect(res.body.error).toBe(LONGITUDE_VALIDATION_ERROR_MSG);
+        done();
+      });
+    });
+
+    // Invalid longitude param > 180
+    it('should return a JSON object with an error message of' + 
+      `${LONGITUDE_VALIDATION_ERROR_MSG} and a status code of `+
+      `${HttpStatusCodes.BAD_REQUEST} if the longitude param was invalid > 180.`,
+    (done) => {
+      // Call API
+      callApi(48.8566, 200, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
         expect(res.body.error).toBe(LONGITUDE_VALIDATION_ERROR_MSG);
         done();

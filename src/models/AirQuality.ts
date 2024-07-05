@@ -14,8 +14,8 @@ export interface IAirQuality {
 // **** Schemas **** //
 
 const airQualitySchema = new Schema<IAirQuality>({
-  latitude: { type: Number, required: true, index: true },
-  longitude: { type: Number, required: true, index: true },
+  latitude: { type: Number, min: -90, max: 90, required: true, index: true },
+  longitude: { type: Number, min: -180, max: 180, required: true, index: true },
   pollution: {
     ts: { type: String, required: true },
     aqius: { type: Number, required: true, index: true },

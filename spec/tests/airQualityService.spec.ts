@@ -22,57 +22,61 @@ const getDummyCoordinates = () => {
 };
 
 
-describe('findByCoordinates', () => {
-  it('should return the air quality data for a set of coordinates', async () => {
-    // Create dummy coordinates
-    const coordinates = getDummyCoordinates();
-
-    // Create dummy pollution object
-    const pollution = getDummyPollution();
+describe('AirQualityService', () => {
+  describe('findByCoordinates', () => {
+    it('should return the air quality data for a set of coordinates', async () => {
+      // Create dummy coordinates
+      const coordinates = getDummyCoordinates();
   
-    // Create httpClient.get method spy
-    const getSpy = spyOn(httpClient, 'get').and.resolveTo({
-      data: {
+      // Create dummy pollution object
+      const pollution = getDummyPollution();
+    
+      // Create httpClient.get method spy
+      const getSpy = spyOn(httpClient, 'get').and.resolveTo({
         data: {
-          current: {
-            pollution,
+          data: {
+            current: {
+              pollution,
+            },
           },
         },
-      },
-    });
-
-    // Call the findByCoordinates function with the coordinates
-    const result = await AirQualityService.findByCoordinates(coordinates);
-
-    // Assert that the httpClient.get method was called with the correct URL
-    expect(getSpy).toHaveBeenCalledWith(
-      `/nearest_city?lat=${coordinates.latitude}&lon=${coordinates.longitude}&key=${EnvVars.IQAIR.API_KEY}`,
-    );
-
-    // Assert that the findByCoordinates function returns the correct data
-    expect(result).toEqual(pollution);
-  });
-
-  it('should throw an error when the httpClient.get method fails', async () => {
-    // Create dummy coordinates
-    const coordinates = getDummyCoordinates();
-
-    // Create httpClient.get method spy
-    const getSpy = 
-      spyOn(httpClient, 'get')
-        .and.rejectWith(new Error('Network error!'));
-
-    try {
+      });
+  
       // Call the findByCoordinates function with the coordinates
-      await AirQualityService.findByCoordinates(coordinates);
-    } catch (error) {
-      // Assert that the findByCoordinates function
-      expect(error).toBeInstanceOf(Error);
-    }
-
-    // Assert that the httpClient.get method was called with the correct URL
-    expect(getSpy).toHaveBeenCalledWith(
-      `/nearest_city?lat=${coordinates.latitude}&lon=${coordinates.longitude}&key=${EnvVars.IQAIR.API_KEY}`,
-    );
+      const result = await AirQualityService.findByCoordinates(coordinates);
+  
+      // Assert that the httpClient.get method was called with the correct URL
+      expect(getSpy).toHaveBeenCalledWith(
+        `/nearest_city?lat=${coordinates.latitude}&lon=${coordinates.longitude}&` + 
+        `key=${EnvVars.IQAIR.API_KEY}`,
+      );
+  
+      // Assert that the findByCoordinates function returns the correct data
+      expect(result).toEqual(pollution);
+    });
+  
+    it('should throw an error when the httpClient.get method fails', async () => {
+      // Create dummy coordinates
+      const coordinates = getDummyCoordinates();
+  
+      // Create httpClient.get method spy
+      const getSpy = 
+        spyOn(httpClient, 'get')
+          .and.rejectWith(new Error('Network error!'));
+  
+      try {
+        // Call the findByCoordinates function with the coordinates
+        await AirQualityService.findByCoordinates(coordinates);
+      } catch (error) {
+        // Assert that the findByCoordinates function
+        expect(error).toBeInstanceOf(Error);
+      }
+  
+      // Assert that the httpClient.get method was called with the correct URL
+      expect(getSpy).toHaveBeenCalledWith(
+        `/nearest_city?lat=${coordinates.latitude}&lon=${coordinates.longitude}&` +
+        `key=${EnvVars.IQAIR.API_KEY}`,
+      );
+    });
   });
 });
