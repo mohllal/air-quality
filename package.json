@@ -5,8 +5,10 @@
     "build": "npx ts-node build.ts",
     "lint": "npx eslint --ext .ts src/",
     "lint:tests": "npx eslint --ext .ts spec/",
-    "start": "node -r module-alias/register ./dist",
-    "dev": "nodemon",
+    "api:start": "node -r module-alias/register ./dist/",
+    "api:dev": "nodemon ./src",
+    "cron:start": "node -r module-alias/register ./dist/cron.js",
+    "cron:dev": "nodemon ./src/cron.ts",
     "test": "nodemon --config ./spec/nodemon.json",
     "test:no-reloading": "npx ts-node --files -r tsconfig-paths/register ./spec"
   },
@@ -14,8 +16,8 @@
     "watch": [
       "src"
     ],
-    "ext": "ts, html",
-    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register ./src"
+    "ext": "ts",
+    "exec": "./node_modules/.bin/ts-node --files -r tsconfig-paths/register"
   },
   "_moduleAliases": {
     "@src": "dist"
@@ -24,7 +26,10 @@
     "node": ">=8.10.0"
   },
   "dependencies": {
+    "@types/cron": "^2.4.0",
+    "@types/mongoose": "^5.11.97",
     "axios": "^1.7.2",
+    "cron": "^3.1.7",
     "express": "^4.19.2",
     "express-async-errors": "^3.1.1",
     "helmet": "^7.1.0",
@@ -35,6 +40,7 @@
     "jsonfile": "^6.1.0",
     "module-alias": "^2.2.3",
     "moment": "^2.30.1",
+    "mongoose": "^8.4.4",
     "morgan": "^1.10.0",
     "ts-command-line-args": "^2.5.1"
   },

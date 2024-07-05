@@ -1,15 +1,54 @@
 version: "3.8"
 
 services:
- api:
-  build:
-   context: .
-   target: builder
-  env_file: .env.dev
-  container_name: api
-  volumes:
-   - ./:/app
-   - /app/node_modules
-  ports:
-   - 3000:3000
-  command: npm run dev
+  api:
+    build:
+      context: .
+      target: builder
+    image: mohllal/air-quality-service
+    env_file: .env.dev
+    container_name: api
+    restart: always
+    ports:
+      - 3000:3000
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: npm run api:dev
+    depends_on:
+      db:
+        condition: service_healthy
+
+  cron:
+    build:
+      context: .
+      target: builder
+    image: mohllal/air-quality-service
+    env_file: .env.dev
+    container_name: cron
+    restart: always
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command: npm run cron:dev
+    depends_on:
+      db:
+        condition: service_healthy
+  
+  db:
+    image: mongo:6.0
+    environment:
+      MONGO_INITDB_DATABASE: airquality
+    container_name: db
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - ./docker/dev/db/data:/data/db
+      - ./docker/dev/db/logs:/var/log/mongodb
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 5s

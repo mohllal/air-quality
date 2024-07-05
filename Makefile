@@ -23,16 +23,24 @@ build: ## Build services in docker-compose.yml
 	docker-compose --file $(COMPOSE_FILE) build --no-cache
 
 up: ## Start services of docker-compose.yml
-	docker-compose --file $(COMPOSE_FILE) up --remove-orphans --force-recreate
+	docker-compose --file $(COMPOSE_FILE) up -d db 
+	docker-compose --file $(COMPOSE_FILE) up api cron --remove-orphans --force-recreate
 
 down: ## Stop services of docker-compose.yml
 	docker-compose --file $(COMPOSE_FILE) down
 
-logs: ## Follow logs of the express server
+logs-api: ## Follow logs of the api container
 	docker-compose --file $(COMPOSE_FILE) logs api --follow
 
-exec: ## Exec inside the express server
+logs-cron: ## Follow logs of the cron container
+	docker-compose --file $(COMPOSE_FILE) logs cron --follow
+
+exec-api: ## Exec inside the api container
 	docker-compose --file $(COMPOSE_FILE) exec api /bin/ash
 
+exec-cron: ## Exec inside the cron container
+	docker-compose --file $(COMPOSE_FILE) exec cron /bin/ash
+
 test: ## Start test services of docker-compose.test.yml
-	docker-compose --file $(COMPOSE_TEST_FILE) up --remove-orphans --abort-on-container-exit
+	docker-compose --file $(COMPOSE_FILE) up -d db
+	docker-compose --file $(COMPOSE_TEST_FILE) up api --remove-orphans --abort-on-container-exit

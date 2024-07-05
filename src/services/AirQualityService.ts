@@ -22,15 +22,29 @@ async function findByCoordinates(
 ): Promise<IQAirPollution> {
   try {
     const { latitude, longitude } = coordinates;
-    logger.info(`Getting air quality by coordinates ${latitude}, ${longitude}`);
+    logger.info(
+      'Getting air quality info by coordinates ' + 
+      `- ${latitude}, ${longitude} from IQAir nearest city API`,
+    );
 
     const response = await httpClient.get<IQAirCityResponse>(
-      `/nearest_city?lat=${latitude}&lon=${longitude}&key=${EnvVars.IQAIR.API_KEY}`,
+      `/nearest_city?lat=${latitude}&lon=${longitude}&` + 
+      `key=${EnvVars.IQAIR.API_KEY}`,
     );
   
-    return response.data.data.current.pollution;
+    const pollution = response.data.data.current.pollution;
+    logger.info(
+      'Got air quality info by coordinates ' +
+      `- ${latitude}, ${longitude} - ${JSON.stringify(pollution)} ` +
+      'from IQAir nearest city API',
+    );
+    return pollution;
   } catch (error) {
-    logger.err(`Getting air quality by coordinates - ${error}`);
+    logger.err(
+      'Failed to get air quality by coordinates ' +
+      `- ${coordinates.latitude}, ${coordinates.longitude} ` +
+      `- ${error}`,
+    );
     throw error;
   }
 }
