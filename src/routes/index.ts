@@ -15,11 +15,17 @@ const apiRouter = Router(),
 
 const airQualityRouter = Router();
 
-// Nearest city API
+// Get pollution info by the nearest city to the provided coordinates.
 airQualityRouter.get(
   Paths.AirQuality.NearestCity,
   validate(['latitude', isLatitude, 'query'], ['longitude', isLongitude, 'query']),
-  AirQualityRoute.findNearestCityPollution,
+  AirQualityRoute.getNearestCityPollution,
+);
+
+// Get Paris most polluted info.
+airQualityRouter.get(
+  Paths.AirQuality.ParisMostPolluted,
+  AirQualityRoute.getParisMostPollutedInfo,
 );
 
 apiRouter.use(Paths.AirQuality.Base, airQualityRouter);

@@ -1,13 +1,15 @@
 version: "3.8"
 
 services:
-  api:
+  tests:
     build:
       context: .
       target: builder
     image: mohllal/air-quality-service
     env_file: .env.test
-    container_name: test_api
+    environment:
+      MONGODB_URL: "mongodb://test_db:27017/airquality"
+    container_name: tests
     volumes:
       - ./:/app
       - /app/node_modules

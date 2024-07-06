@@ -1,4 +1,3 @@
-import { AxiosError } from 'axios';
 import HttpClient from '@src/utils/HttpClient';
 
 describe('HttpClient', () => {
@@ -41,16 +40,11 @@ describe('HttpClient', () => {
     // Create axios.get method spy
     const axiosGetSpy = 
       spyOn(httpClient.instance, 'get')
-        .and.rejectWith(new AxiosError('Network error!'));
+        .and.rejectWith(new Error('Network error!'));
   
-    try {
-      // Call the HttpClient.get method with the URL and options
-      await httpClient.get('https://example.com', {});
-    } catch (error) {
-      // Assert that the HttpClient.get method throws an error
-      expect(error).toBeInstanceOf(AxiosError);
-    }
-
+    // Call the HttpClient.get method and assert that it is rejected
+    await expectAsync(httpClient.get('https://example.com', {})).toBeRejected();
+   
     // Assert that the axios.get method was called with the correct URL
     expect(axiosGetSpy).toHaveBeenCalledWith('https://example.com', {});
   });

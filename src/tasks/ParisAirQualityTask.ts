@@ -15,13 +15,13 @@ const PARIS_LONGITUDE = EnvVars.PAIRS_COORDINATES.LONGITUDE;
  * Poll Paris air quality info
  */
 async function parisAirQualityTask () {
-  const pollution = await AirQualityService.findByCoordinates({
+  const pollution = await AirQualityService.getPollutionByCoordinates({
     latitude: PARIS_LATITUDE,
     longitude: PARIS_LONGITUDE,
   });
 
   const airQuality: IAirQuality = {
-    latitude: PARIS_LONGITUDE,
+    latitude: PARIS_LATITUDE,
     longitude: PARIS_LONGITUDE,
     pollution: {
       ts: pollution.ts,

@@ -51,8 +51,8 @@ describe('AirQualityRoute', () => {
       // Create dummy pollution
       const data = getDummyPollution();
   
-      // Create findByCoordinates function spy
-      spyOn(AirQualityService, 'findByCoordinates').and.resolveTo(data);
+      // Create getPollutionByCoordinates function spy
+      spyOn(AirQualityService, 'getPollutionByCoordinates').and.resolveTo(data);
       
       // Call API
       callApi(48.8566, 2.3522, res => {
@@ -136,6 +136,31 @@ describe('AirQualityRoute', () => {
       callApi(48.8566, 200, res => {
         expect(res.status).toBe(HttpStatusCodes.BAD_REQUEST);
         expect(res.body.error).toBe(LONGITUDE_VALIDATION_ERROR_MSG);
+        done();
+      });
+    });
+  });
+
+  describe(`"GET:${Paths.AirQuality.ParisMostPolluted}"`, () => {
+    // Setup API
+    const callApi = (cb: TApiCb) => 
+      agent
+        .get(Paths.AirQuality.ParisMostPolluted)
+        .end(apiCb(cb));
+
+    // Success
+    it('should return a JSON object with Paris pollution info and a status code ' + 
+    `of "${HttpStatusCodes.OK}" if the request was successful.`, (done) => {
+      // Create dummy pollution
+      const data = getDummyPollution();
+  
+      // Create getMostPollutedByCoordinates function spy
+      spyOn(AirQualityService, 'getMostPollutedByCoordinates').and.resolveTo(data);
+      
+      // Call API
+      callApi(res => {
+        expect(res.status).toBe(HttpStatusCodes.OK);
+        expect(res.body).toEqual({ pollution: data });
         done();
       });
     });

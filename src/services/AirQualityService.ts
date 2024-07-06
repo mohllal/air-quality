@@ -3,6 +3,7 @@ import {
   IQAirPollution,
 } from '@src/models/IQAir';
 
+import AirQualityRepo from '@src/repos/AirQualityRepo';
 import EnvVars from '@src/common/EnvVars';
 import HTTPClient from '@src/utils/HttpClient';
 import { ICoordinates } from '@src/models/misc';
@@ -15,9 +16,9 @@ export const httpClient = new HTTPClient(EnvVars.IQAIR.BASE_URL);
 // **** Functions **** //
 
 /**
- * Find by coordinates (latitude & longitude)
+ * Get pollution by coordinates (latitude & longitude)
  */
-async function findByCoordinates(
+async function getPollutionByCoordinates(
   coordinates: ICoordinates,
 ): Promise<IQAirPollution> {
   try {
@@ -50,8 +51,43 @@ async function findByCoordinates(
   }
 }
 
+/**
+ * Get most pollution info by coordinates (latitude & longitude)
+ */
+async function getMostPollutedByCoordinates(
+  coordinates: ICoordinates,
+): Promise<IQAirPollution | undefined> {
+  try {
+    const { latitude, longitude } = coordinates;
+    logger.info(
+      'Getting most pollution info by coordinates ' + 
+      `- ${latitude}, ${longitude} from database`,
+    );
+
+    const airQuality = await AirQualityRepo.getMostPolluted(latitude, longitude);
+  
+    const pollution = airQuality?.pollution;
+  
+    logger.info(
+      'Got most pollution info by coordinates ' +
+      `- ${latitude}, ${longitude} - ${JSON.stringify(pollution)} ` +
+      'from database',
+    );
+
+    return pollution;
+  } catch (error) {
+    logger.err(
+      'Failed to get most pollution info by coordinates ' +
+      `- ${coordinates.latitude}, ${coordinates.longitude} ` +
+      `- ${error}`,
+    );
+    throw error;
+  }
+}
+
 // **** Export default **** //
 
 export default {
-  findByCoordinates,
+  getPollutionByCoordinates,
+  getMostPollutedByCoordinates,
 } as const;

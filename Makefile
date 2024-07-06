@@ -43,4 +43,4 @@ exec-cron: ## Exec inside the cron container
 
 test: ## Start test services of docker-compose.test.yml
 	docker-compose --file $(COMPOSE_FILE) up -d db
-	docker-compose --file $(COMPOSE_TEST_FILE) up api --remove-orphans --abort-on-container-exit
+	docker-compose --file $(COMPOSE_TEST_FILE) up tests --remove-orphans --abort-on-container-exit

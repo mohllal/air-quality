@@ -5,8 +5,8 @@
 import '@src/pre-start'; // Must be the first import
 
 import { CronJob } from 'cron';
-import EnvVars from './common/EnvVars';
-import ParisAirQualityTask from './tasks/ParisAirQualityTask';
+import EnvVars from '@src/common/EnvVars';
+import ParisAirQualityTask from '@src/tasks/ParisAirQualityTask';
 import logger from 'jet-logger';
 
 // **** Variables **** //

@@ -3,7 +3,6 @@ import { clear, connect, disconnect } from 'spec/support/database';
 
 import AirQualityRepo from '@src/repos/AirQualityRepo';
 import { IQAirPollution } from '@src/models/IQAir';
-import { MongooseError } from 'mongoose';
 import { faker } from '@faker-js/faker';
 
 const getDummyPollution = () => {
@@ -58,16 +57,11 @@ describe('AirQualityRepo', () => {
 
     it('should throw an error when the AirQuality.findOne method fails', async () => {
       // Create AirQuality.findOne method spy
-      const findOneSpy = spyOn(AirQuality, 'findOne').and.rejectWith(new MongooseError('Database error!'));
-    
-      try {
-        // Call the getOne function with the coordinates data
-        await AirQualityRepo.getOne(10.1, 20.1);
-      } catch (error) {
-        // Assert that the getOne function throws an error
-        expect(error).toBeInstanceOf(MongooseError);
-      }
-
+      const findOneSpy = spyOn(AirQuality, 'findOne').and.rejectWith(new Error('Database error!'));
+   
+      // Call the getOne function and assert that it is rejected
+      await expectAsync(AirQualityRepo.getOne(10.1, 20.1)).toBeRejected();
+      
       // Assert that the AirQuality.findOne method was called with the correct filter
       expect(findOneSpy).toHaveBeenCalledWith({
         latitude: 10.1,
@@ -97,16 +91,11 @@ describe('AirQualityRepo', () => {
 
     it('should throw an error when the AirQuality.find method fails', async () => {
       // Create AirQuality.find method spy
-      const findSpy = spyOn(AirQuality, 'find').and.rejectWith(new MongooseError('Database error!'));
+      const findSpy = spyOn(AirQuality, 'find').and.rejectWith(new Error('Database error!'));
     
-      try {
-        // Call the getAll function to get all air quality documents
-        await AirQualityRepo.getAll();
-      } catch (error) {
-        // Assert that the getAll function throws an error
-        expect(error).toBeInstanceOf(MongooseError);
-      }
-
+      // Call the getAll function and assert that it is rejected
+      await expectAsync(AirQualityRepo.getAll()).toBeRejected();
+     
       // Assert that the AirQuality.find method was called with the correct filter
       expect(findSpy).toHaveBeenCalled();
     });
@@ -145,15 +134,10 @@ describe('AirQualityRepo', () => {
 
     it('should throw an error when the AirQuality.findOne method fails', async () => {
       // Create AirQuality.findOne method spy
-      const findOneSpy = spyOn(AirQuality, 'findOne').and.rejectWith(new MongooseError('Database error!'));
-    
-      try {
-        // Call the getMostPolluted function to get the most polluted air quality
-        await AirQualityRepo.getMostPolluted(10.1, 20.1);
-      } catch (error) {
-        // Assert that the getMostPolluted function throws an error
-        expect(error).toBeInstanceOf(MongooseError);
-      }
+      const findOneSpy = spyOn(AirQuality, 'findOne').and.rejectWith(new Error('Database error!'));
+ 
+      // Call the getMostPolluted function and assert that it is rejected
+      await expectAsync(AirQualityRepo.getMostPolluted(10.1, 20.1)).toBeRejected();
 
       // Assert that the AirQuality.find method was called with the correct filter
       expect(findOneSpy).toHaveBeenCalled();
@@ -192,15 +176,10 @@ describe('AirQualityRepo', () => {
       const dummyAirQuality = getDummyAirQuality();
   
       // Create AirQuality.create method spy
-      const createSpy = spyOn(AirQuality, 'create').and.rejectWith(new MongooseError('Database error!'));
+      const createSpy = spyOn(AirQuality, 'create').and.rejectWith(new Error('Database error!'));
     
-      try {
-        // Call the add function with the air quality data
-        await AirQualityRepo.add(dummyAirQuality);
-      } catch (error) {
-        // Assert that the add function throws an error
-        expect(error).toBeInstanceOf(MongooseError);
-      }
+      // Call the add function and assert that it is rejected
+      await expectAsync(AirQualityRepo.add(dummyAirQuality)).toBeRejected();
 
       // Assert that the AirQuality.findOne method was called with the correct filter
       expect(createSpy).toHaveBeenCalledWith(dummyAirQuality);
