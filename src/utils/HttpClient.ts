@@ -4,7 +4,9 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from 'axios';
+import axiosRetry, { isNetworkOrIdempotentRequestError } from 'axios-retry';
 
+import EnvVars from '@src/common/EnvVars';
 import HttpClientError from '@src/common/HttpClientError';
 import HttpErrorMessages from '@src/common/HttpErrorMessages';
 
@@ -36,6 +38,12 @@ export default class HttpClient implements IHttpClient {
       },
     });
     
+    // Register retry on network and idempotent request error
+    axiosRetry(this.instance, {
+      retries: EnvVars.HTTP_REQUEST_MAX_RETRIES,
+      retryCondition: isNetworkOrIdempotentRequestError,
+    });
+
     // Register response interceptors
     this.instance.interceptors.response.use(
       (response) => response,

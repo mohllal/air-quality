@@ -1,21 +1,16 @@
 import { AxiosError } from 'axios';
-import HttpStatusCodes from '@src/common/HttpStatusCodes';
-import RouteError from '@src/common/RouteError';
 
 /**
  * HTTP client error
  */
 
-export class HttpClientError extends RouteError {
+export class HttpClientError extends Error {
 
-  public originalError: AxiosError;
+  public cause: AxiosError;
 
-  public constructor(message: string, originalError: AxiosError) {
-    super(
-      originalError.response?.status || HttpStatusCodes.INTERNAL_SERVER_ERROR,
-      message,
-    );
-    this.originalError = originalError;
+  public constructor(message: string, cause: AxiosError) {
+    super(message);
+    this.cause = cause;
   }
 }
 

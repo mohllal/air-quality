@@ -46,8 +46,8 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - ./docker/dev/db/data:/data/db
-      - ./docker/dev/db/logs:/var/log/mongodb
+      - ./docker/db/data:/data/db
+      - ./docker/db/logs:/var/log/mongodb
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 20s
